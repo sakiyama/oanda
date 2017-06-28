@@ -16,7 +16,12 @@ module.exports = function(config) {
 		}
 		request.get({
 			url : url
-		},next);
+		},function(err,accounts){
+			if(accounts && accounts.accounts){
+				accounts = accounts.accounts;
+			}
+			next(err,accounts);
+		});
 	}
 	this.candles = function(config,next){
 		request.get({

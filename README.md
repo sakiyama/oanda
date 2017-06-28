@@ -9,12 +9,12 @@ This library targets v1 api. v3 is not supported in japan OMG.
 ####Example request
 
 	var api = new oanda({
-		key: key,//99999999999999999999999999999999-99999999999999999999999999999999
+		key: '99999999999999999999999999999999-99999999999999999999999999999999',
 		type: 'practice'
 	});
 	api.accounts(function(err,accounts){
 		console.log(accounts);
-		var account_id = accounts.accounts[0].accountId;
+		var account_id = accounts[0].accountId;
 		api.accounts(account_id,function(err,account){
 	//		console.log(err,account);
 		});

@@ -27,7 +27,7 @@ module.exports = function(config) {
 	request = request.defaults({
 		headers: {
 			Authorization : 'Bearer ' + config.key,
-			"Accept-Datetime-Format" : 'UNIX'
+			"X-Accept-Datetime-Format" : 'UNIX'
 		}
 	});
 	this.stream = function(config,next){

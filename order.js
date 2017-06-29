@@ -1,6 +1,8 @@
 var util = require('./util');
 class order {
-	constructor(data){
+	constructor(data,api,account){
+		this.account = account;
+		var order = this;
 		data = util.removeSide(data);
 		util.bind(this,{
 			side : {
@@ -13,6 +15,15 @@ class order {
 				type :  Date
 			},
 		},data);
+		this.get = function(next){
+			return api.order(order.account,order.id,next);
+		}
+		this.close = function(next){
+			return api.orderClose(order.account,order.id,next);
+		}
+		this.update = function(config,next){
+			return api.orderUpdate(order.account,order.id,config,next);
+		}
 	}
 }
 module.exports = order;

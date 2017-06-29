@@ -65,7 +65,7 @@ module.exports = function(config) {
 			});
 		};
 	},this);
-	["patch"].forEach(function(method){
+	["patch","post"].forEach(function(method){
 		this[method] = function(url,config,next){
 			url = this.host.rest + url;
 			request[method](url,{form:config} ,function (err, res, body) {

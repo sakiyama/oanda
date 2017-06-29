@@ -7,6 +7,7 @@ This library is a NodeJS wrapper for the [Oanda REST API](http://developer.oanda
 This library targets v1 api. v3 is not supported in japan OMG.
 
 ####Example request
+
 	var oanda = require('./oanda/')({
 		key: '99999999999999999999999999999999-99999999999999999999999999999999'
 		type: 'practice' // 'real' or 'sandbox'

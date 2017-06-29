@@ -1,6 +1,10 @@
 var util = require('./util');
 class transaction {
 	constructor(data){
+		data = util.removeSide(data);
+		if(data.tradeOpened && data.tradeOpened.units){
+			data.tradeOpened.units = data.units;
+		}
 		util.bind(this,{
 			time : {
 				type :  Date
@@ -9,7 +13,7 @@ class transaction {
 				type :  Date
 			},
 			accountId : {
-				remove : true
+				name : "account"
 			},
 			orderId : {
 				name : "order"
@@ -22,6 +26,9 @@ class transaction {
 			},
 			stopLossPrice : {
 				name : "stopLoss"
+			},
+			accountBalance : {
+				name : "balance"
 			},
 		},data);
 	}

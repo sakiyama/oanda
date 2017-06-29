@@ -1,9 +1,22 @@
 'use strict'
-var _api = require('./api.js');
+var api = require('./api.js');
 module.exports = function(config) {
-	global.api = new _api(config);
-	this.types = {
-		'account' : require('./account')
-	};
+	var types = {};
+	[
+		'account',
+		'request',
+		'candle',
+		'tick',
+		'account',
+		'transaction',
+		'order',
+		'trade',
+		'position'
+	].forEach(function(name){
+		types[name] = require('./'+name);
+	})
+	return {
+		api : new api(config,types),
+		types : types
+	}
 };
-

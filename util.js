@@ -1,3 +1,4 @@
+'use strict'
 module.exports = {
 	bind : function(target,config,data){
 		for ( var property in data) {
@@ -28,5 +29,14 @@ module.exports = {
 			}
 			target[name] = result;
 		}
+	},
+	removeSide : function(data){
+		if(data.side == 'sell' && data.units){
+			data.units *= -1;
+		}
+		if(data.side){
+			delete data.side;
+		}
+		return data;
 	}
 };

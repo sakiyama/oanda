@@ -65,5 +65,23 @@ module.exports = function(config) {
 			});
 		};
 	},this);
+	["patch"].forEach(function(method){
+		this[method] = function(url,config,next){
+			url = this.host.rest + url;
+			request[method](url,{form:config} ,function (err, res, body) {
+				if(err){
+					return next(err,null);
+				}
+				if(body){
+					body = JSON.parse(body)
+				}
+				if(res.statusCode == 200){
+					next(null,body);
+				}else{
+					next(body,null);
+				}
+			});
+		};
+	},this);
 
 };

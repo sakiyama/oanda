@@ -1,9 +1,7 @@
 var util = require('./util');
 class order {
 	constructor(data){
-		if(data.side == 'sell'){
-			data.units *= -1;
-		}
+		data = util.removeSide(data);
 		util.bind(this,{
 			side : {
 				remove :  true

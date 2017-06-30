@@ -1,5 +1,6 @@
 'use strict'
 module.exports = function(config,types) {
+	var api = this;
 	config = Object.assign({
 		type : 'practice'
 	}, config);
@@ -19,10 +20,10 @@ module.exports = function(config,types) {
 			if(accounts){
 				if(accounts.accounts){
 					accounts = accounts.accounts.map(function(single){
-						return new types.account(single);
+						return new types.account(single,api);
 					});
 				}else{
-					accounts = new types.account(accounts);
+					accounts = new types.account(accounts,api);
 				}
 			}
 			next(err,accounts);
@@ -108,25 +109,47 @@ module.exports = function(config,types) {
 			url :'accounts/'+ id + '/' + names + '/' + specifer
 		},function(err,data){
 			if(data){
-				data = new types[name](data);
+				data = new types[name](data,api,id);
 			}
-			next(err,data);
+			if(next){
+				next(err,data);
+			}
 		});
 	}
 	this.tradeUpdate = function(id,trade_id,config,next){
 		request.patch('accounts/'+ id + '/trades/' + trade_id,config,function(err,data){
 			if(data){
-				data = new types.trade(data);
+				data = new types.trade(data,api,id);
 			}
-			next(err,data);
+			if(next){
+				next(err,data);
+			}
 		});
 	}
 	this.orderUpdate = function(id,order_id,config,next){
 		request.patch('accounts/'+ id + '/orders/' + order_id,config,function(err,data){
 			if(data){
-				data = new types.order(data);
+				data = new types.order(data,api,id);
 			}
-			next(err,data);
+			if(next){
+				next(err,data);
+			}
+		});
+	}
+	this.orderCreate = function(id,config,next){
+		if(config.units>0){
+			config.side = 'buy';
+		}else{
+			config.side = 'sell';
+			config.units = Math.abs(config.units);
+		}
+		request.post('accounts/'+ id + '/orders',config,function(err,data){
+			if(data){
+				data = new types.response(data,api,id);
+			}
+			if(next){
+				next(err,data);
+			}
 		});
 	}
 	function accountProperty(single,name,names,id,config,next){
@@ -142,12 +165,12 @@ module.exports = function(config,types) {
 				if(err){
 					next(err,null);
 				}else{
-					next(null,new types[name](row));
+					next(null,new types[name](row,api,id));
 				}
 			}else{
 				if(row[names]){
 					var rows = row[names].map(function(single){
-						return new types[name](single);
+						return new types[name](single,api,id);
 					})
 					next(null,rows);
 				}else{
@@ -156,23 +179,4 @@ module.exports = function(config,types) {
 			}
 		});
 	}
-	/*
-	[{
-		name:"orders",
-		"class":types.order
-	},{
-		name:"trades",
-		"class":types.trade
-	},{
-		name:"positions",
-		"class":types.position
-	}].forEach(function(single){
-		this[single.name] = function(config,next){
-			accountProperty(single,config,next);
-		}
-		this[single.name+'Close'] = function(config,next){
-			closeProperty(single,config,next);
-		}
-	},this);
-	*/
 };

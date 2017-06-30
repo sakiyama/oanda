@@ -31,15 +31,21 @@ module.exports = function(config) {
 		}
 	});
 	this.stream = function(config,next){
+		var streambuffer = "";
 		config.url = this.host.stream + config.url;
 		request.get(config ,function (err, res, body) {
 		}).on('data', function(data) {
-			data = data.toString();
+			data = data.toString() + streambuffer;
+			streambuffer == "";
 			data.split('\r\n').forEach(function(row){
 				if(!row){
 					return;
 				}
-				row = JSON.parse(row);
+				try{
+					row = JSON.parse(row);
+				}catch(e){
+					streambuffer = row;
+				}
 				if(row.heartbeat){
 					return;
 				}
@@ -65,7 +71,7 @@ module.exports = function(config) {
 			});
 		};
 	},this);
-	["patch"].forEach(function(method){
+	["patch","post"].forEach(function(method){
 		this[method] = function(url,config,next){
 			url = this.host.rest + url;
 			request[method](url,{form:config} ,function (err, res, body) {
@@ -75,7 +81,7 @@ module.exports = function(config) {
 				if(body){
 					body = JSON.parse(body)
 				}
-				if(res.statusCode == 200){
+				if(res.statusCode >= 200 && res.statusCode <= 226){
 					next(null,body);
 				}else{
 					next(body,null);

@@ -11,7 +11,8 @@ module.exports = function(config) {
 		'transaction',
 		'order',
 		'trade',
-		'position'
+		'position',
+		'response',
 	].forEach(function(name){
 		types[name] = require('./'+name);
 	})

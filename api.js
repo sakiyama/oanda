@@ -145,8 +145,7 @@ module.exports = function(config,types) {
 		}
 		request.post('accounts/'+ id + '/orders',config,function(err,data){
 			if(data){
-				console.log(data);
-				data = new types.order(data,api,id);
+				data = new types.response(data,api,id);
 			}
 			if(next){
 				next(err,data);

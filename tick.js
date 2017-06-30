@@ -10,7 +10,12 @@ class tick  {
 				type :  Date
 			},
 		},data);
-		this.mid = middle(this.ask,this.bid);
+	}
+	mid(){
+		return middle(this.ask,this.bid);
+	}
+	spread(){
+		return ((this.ask*zeros - this.bid*zeros) / zeros);
 	}
 }
 module.exports = tick;

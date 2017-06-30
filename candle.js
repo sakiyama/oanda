@@ -8,6 +8,7 @@ class candle  {
 		if(!config.complete){
 			this.incomplete = true;
 		}
+		this.time = new Date(config.time/1000);
 		["open","high","low","close"].forEach(function(name){
 			this[name] = middle(config[name+'Bid'],config[name+'Ask']);
 		},this);

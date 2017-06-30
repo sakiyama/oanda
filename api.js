@@ -38,7 +38,8 @@ module.exports = function(config,types) {
 			if(data.candles){
 				candles = data.candles.map(function(single){
 					return new types.candle(single);
-				})
+				});
+				candles.reverse();
 			}
 			next(err,candles);
 		});

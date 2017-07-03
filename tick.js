@@ -1,3 +1,4 @@
+'use strict'
 var util = require('./util');
 var zeros = Math.pow(10, 7);
 function middle(num1,num2){

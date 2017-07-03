@@ -1,3 +1,4 @@
+'use strict'
 var util = require('./util');
 class order {
 	constructor(data,api,account){

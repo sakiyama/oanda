@@ -1,3 +1,4 @@
+'use strict'
 var util = require('./util');
 class trade {
 	constructor(data,api,id){

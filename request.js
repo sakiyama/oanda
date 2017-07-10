@@ -21,6 +21,7 @@ module.exports = function(config) {
 		};
 		break;
 	}
+	this.host["labs"] = this.host.rest + '/labs'
 	for(var property in this.host){
 		this.host[property] = this.host[property] + '/v1/';
 	}
@@ -53,21 +54,24 @@ module.exports = function(config) {
 			})
 		});
 	};
+	function afterRequest(err, res, body, next){
+		if(err){
+			return next(err,null);
+		}
+		if(body){
+			body = JSON.parse(body)
+		}
+		if(res.statusCode >= 200 && res.statusCode <= 226){
+			next(null,body);
+		}else{
+			next(body,null);
+		}
+	}
 	["get","delete"].forEach(function(method){
 		this[method] = function(config,next){
 			config.url = this.host.rest + config.url;
 			request[method](config ,function (err, res, body) {
-				if(err){
-					return next(err,null);
-				}
-				if(body){
-					body = JSON.parse(body)
-				}
-				if(res.statusCode == 200){
-					next(null,body);
-				}else{
-					next(body,null);
-				}
+				afterRequest(err, res, body, next);
 			});
 		};
 	},this);
@@ -75,19 +79,14 @@ module.exports = function(config) {
 		this[method] = function(url,config,next){
 			url = this.host.rest + url;
 			request[method](url,{form:config} ,function (err, res, body) {
-				if(err){
-					return next(err,null);
-				}
-				if(body){
-					body = JSON.parse(body)
-				}
-				if(res.statusCode >= 200 && res.statusCode <= 226){
-					next(null,body);
-				}else{
-					next(body,null);
-				}
+				afterRequest(err, res, body, next);
 			});
 		};
 	},this);
-
+	this.labs = function(config,next){
+		config.url = this.host.labs + config.url;
+		request.get(config ,function (err, res, body) {
+			afterRequest(err, res, body, next);
+		});
+	}
 };

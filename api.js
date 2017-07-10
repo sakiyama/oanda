@@ -5,6 +5,25 @@ module.exports = function(config,types) {
 		type : 'practice'
 	}, config);
 	var request = new types.request(config);
+	this.labs = {
+		calender : function(config, next){
+			config.period = config.period / 1000;
+			request.labs({
+				url : 'calendar',
+				qs : config
+			},function(err,data){
+				if(data){
+					data = data.map(function(single){
+						if(single.timestamp){
+							single.timestamp = new Date(single.timestamp*1000)
+						}
+						return single;
+					})
+				}
+				next(err,data);
+			});
+		}
+	}
 	this.accounts = function(id , next){
 		if(typeof id == 'function'){
 			next = id;

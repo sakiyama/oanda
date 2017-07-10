@@ -19,7 +19,7 @@ module.exports = function(config) {
 	return {
 		api : new api(config,types),
 		types : types,
-		granularities : {
+		timespan : {
 			s5 : 5000,
 			s10 : 10000,
 			s15 : 15000,

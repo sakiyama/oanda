@@ -15,7 +15,7 @@ module.exports = function(config) {
 		'response',
 	].forEach(function(name){
 		types[name] = require('./'+name);
-	})
+	});
 	return {
 		api : new api(config,types),
 		types : types,

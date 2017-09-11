@@ -23,6 +23,9 @@ class account {
 		this.get = function(next){
 			return api.accounts(id,next);
 		}
+		this.instruments = function(next){
+			return api.instruments(id,next);
+		}
 		this.candles = function(config,next){
 			config.accountId = id;
 			return api.candles(config,next);

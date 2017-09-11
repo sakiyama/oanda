@@ -108,6 +108,19 @@ module.exports = function(config,types) {
 			}
 		});
 	};
+	this.instruments = function(id,next){
+		request.get({
+			url :'instruments',
+			qs : {
+				accountId : id
+			}
+		},function (err, row) {
+			if(row && row.instruments){
+				row = row.instruments;
+			}
+			next(err,row);
+		});
+	};
 	["order","trade","position"].forEach(function(name){
 		var names = name + "s";
 		this[names] = function(id,config,next){

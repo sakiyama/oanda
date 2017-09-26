@@ -54,7 +54,7 @@ module.exports = function(config,types) {
 			qs : config
 		},function(err,data){
 			var candles = null;
-			if(data.candles){
+			if(data && data.candles){
 				candles = data.candles.map(function(single){
 					return new types.candle(single);
 				});
